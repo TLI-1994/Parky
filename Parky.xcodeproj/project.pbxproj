@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3EF23802C16A30003013B2A0 /* Pods_Parky.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A0384BAACC1EF327424CB4E /* Pods_Parky.framework */; };
 		9BAF046E2926E92000069823 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAF046D2926E92000069823 /* AppDelegate.swift */; };
 		9BAF04702926E92000069823 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAF046F2926E92000069823 /* SceneDelegate.swift */; };
 		9BAF04722926E92000069823 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAF04712926E92000069823 /* ViewController.swift */; };
@@ -15,6 +16,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6175936FAA0966B5118FEA12 /* Pods-Parky.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Parky.debug.xcconfig"; path = "Target Support Files/Pods-Parky/Pods-Parky.debug.xcconfig"; sourceTree = "<group>"; };
+		7A0384BAACC1EF327424CB4E /* Pods_Parky.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Parky.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BAF046A2926E92000069823 /* Parky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BAF046D2926E92000069823 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9BAF046F2926E92000069823 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -22,6 +25,7 @@
 		9BAF04762926E92300069823 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9BAF04792926E92300069823 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9BAF047B2926E92300069823 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F20F62A37D5580EEB53A60A9 /* Pods-Parky.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Parky.release.xcconfig"; path = "Target Support Files/Pods-Parky/Pods-Parky.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +33,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EF23802C16A30003013B2A0 /* Pods_Parky.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		58181C236DC4E786164095CE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7A0384BAACC1EF327424CB4E /* Pods_Parky.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9BAF04612926E92000069823 = {
 			isa = PBXGroup;
 			children = (
 				9BAF046C2926E92000069823 /* Parky */,
 				9BAF046B2926E92000069823 /* Products */,
+				C9C8B7CFDDFEB52D6EA2633D /* Pods */,
+				58181C236DC4E786164095CE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +79,16 @@
 			path = Parky;
 			sourceTree = "<group>";
 		};
+		C9C8B7CFDDFEB52D6EA2633D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6175936FAA0966B5118FEA12 /* Pods-Parky.debug.xcconfig */,
+				F20F62A37D5580EEB53A60A9 /* Pods-Parky.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -71,9 +96,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9BAF047E2926E92300069823 /* Build configuration list for PBXNativeTarget "Parky" */;
 			buildPhases = (
+				FBF2402FDC1D1794E6FD3466 /* [CP] Check Pods Manifest.lock */,
 				9BAF04662926E92000069823 /* Sources */,
 				9BAF04672926E92000069823 /* Frameworks */,
 				9BAF04682926E92000069823 /* Resources */,
+				800A71A458CFA8856899BC9A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -128,6 +155,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		800A71A458CFA8856899BC9A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Parky/Pods-Parky-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Parky/Pods-Parky-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Parky/Pods-Parky-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FBF2402FDC1D1794E6FD3466 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Parky-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9BAF04662926E92000069823 /* Sources */ = {
@@ -270,6 +339,7 @@
 		};
 		9BAF047F2926E92300069823 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6175936FAA0966B5118FEA12 /* Pods-Parky.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -298,6 +368,7 @@
 		};
 		9BAF04802926E92300069823 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F20F62A37D5580EEB53A60A9 /* Pods-Parky.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
