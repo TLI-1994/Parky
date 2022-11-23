@@ -6,14 +6,53 @@
 //
 
 import UIKit
+import SnapKit
+import MapKit
 
 class ViewController: UIViewController {
+    let mapButton = UIButton()
+    var parkingLots: [ParkingLot] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        view.backgroundColor = .white
+        
+        mapButton.translatesAutoresizingMaskIntoConstraints = false
+        mapButton.setTitle("push map", for: .normal)
+        mapButton.backgroundColor = .systemBlue
+        mapButton.layer.cornerRadius = 10
+        mapButton.addTarget(self, action: #selector(pushMap), for: .touchUpInside)
+        view.addSubview(mapButton)
+        
+        fetchParkingLots()
+        
+        setupConstraints()
     }
-
+    
+    func fetchParkingLots() {
+        NetworkManager.getAllParkingLots { parkingLots in
+            print("received \(parkingLots.count) parks")
+            self.parkingLots = parkingLots
+        }
+    }
+    
+    var mapView: MapViewController?
+    @objc func pushMap() {
+        if let mapView {
+            navigationController?.pushViewController(mapView, animated: true)
+        } else {
+            mapView = MapViewController(parkingLots: self.parkingLots)
+            pushMap()
+        }
+    }
+    
+    func setupConstraints() {
+        mapButton.snp.makeConstraints { make in
+            make.width.equalToSuperview().multipliedBy(0.4)
+            make.centerX.centerY.equalToSuperview()
+        }
+    }
 
 }
 
