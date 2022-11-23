@@ -43,6 +43,7 @@ class DetailViewController: UIViewController {
         
         parkLabel.text = park.name
         parkLabel.font = UIFont(name: "Futura-bold", size: 20)
+        parkLabel.numberOfLines = 2
         parkLabel.textColor = .black
         parkLabel.textAlignment = .center
         parkLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -150,9 +151,9 @@ class DetailViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            parkLabel.widthAnchor.constraint(equalTo: view.widthAnchor),
-            parkLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            parkLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 25)
+            parkLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            parkLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            parkLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80)
         ])
         
         NSLayoutConstraint.activate([
