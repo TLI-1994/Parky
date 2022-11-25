@@ -6,19 +6,39 @@
 //
 
 import UIKit
+import SnappingLayout
 
 class DetailViewController: UIViewController {
-    
+    let snappingLayout = SnappingLayout()
     let parkLabel = UILabel()
     let picImageView = UIImageView()
+    let blockLabel = UIView()
     let block = UIView()
+    let backButton = UIButton()
+    let stackViewName = UIStackView()
     
     let parkAddress = UILabel()
-    let parkOpen = UILabel()
+    let untilLabel = UILabel()
     let ParkOpenTime = UILabel()
     let parkFee = UILabel()
-    let parkOpenStatus = UILabel()
+    let isOpenLabel = UILabel()
     
+    let userComment = UILabel()
+    let addPhoto = UILabel()
+    let commentBlock = UIView()
+    
+    var commentTxt = UITextField()
+    let submitButton = UIButton()
+    
+    let locationLabel = UILabel()
+    
+    var parkImageDic: [Int: Int] = [:]
+    var parkComment: [Comment] = []
+    let spacing: CGFloat = 10
+    var direction: Bool = true
+    
+    var collectionView: UICollectionView!
+    let commentReuseIdentifier: String = "commentReuseIdentifier"
     
     let park: Park
     
@@ -28,18 +48,30 @@ class DetailViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        picImageView.image = UIImage(systemName: "square.fill")
+        for i in 1..<22 {
+            parkImageDic[i] = i
+        }
+        // latest comment
+        parkComment = park.comments//.suffix(5).reversed()
+        
         //picImageView.contentMode = .scaleAspectFit
+        
         picImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(picImageView)
+        
+        block.layer.backgroundColor = UIColor.white.cgColor
+        block.layer.cornerRadius = 20
+        block.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(block)
+        
+        blockLabel.layer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.45).cgColor
+        blockLabel.layer.cornerRadius = 20
+        blockLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(blockLabel)
         
         parkLabel.text = park.name
         parkLabel.font = UIFont(name: "Futura-bold", size: 20)
@@ -48,147 +80,328 @@ class DetailViewController: UIViewController {
         parkLabel.textAlignment = .center
         parkLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(parkLabel)
-        // Do any additional setup after loading the view.
-        
-        block.layer.backgroundColor = UIColor.white.cgColor
-        block.layer.cornerRadius = 20
-        block.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(block)
         
         parkAddress.font = UIFont(name: "Futura", size: 16)
         parkAddress.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(parkAddress)
 
-        parkOpen.font = UIFont(name: "Futura", size: 16)
-        parkOpen.textColor = .darkGray
-        parkOpen.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(parkOpen)
+        untilLabel.font = UIFont(name: "Futura", size: 16)
+        untilLabel.textColor = .darkGray
+        untilLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(untilLabel)
         
         ParkOpenTime.font = UIFont(name: "Futura", size: 16)
-        ParkOpenTime.textColor = .darkGray
+        ParkOpenTime.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         ParkOpenTime.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(ParkOpenTime)
 
-        parkOpenStatus.font = UIFont(name: "Futura-bold", size: 16)
-        parkOpenStatus.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(parkOpenStatus)
+        isOpenLabel.font = UIFont(name: "Futura-bold", size: 16)
+        isOpenLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(isOpenLabel)
         
-        parkFee.font = UIFont(name: "Futura", size: 16)
+        parkFee.font = UIFont(name: "Futura", size: 12)
         parkFee.numberOfLines = 2
         parkFee.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(parkFee)
         
+        userComment.font = UIFont(name: "Futura", size: 20)
+        userComment.text = "Comment"
+        userComment.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(userComment)
+        
+        commentBlock.layer.backgroundColor = UIColor(red: 0.925, green: 0.925, blue: 0.925, alpha: 1).cgColor
+        commentBlock.layer.cornerRadius = 15
+        commentBlock.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(commentBlock)
+        
+        addPhoto.font = UIFont(name: "Futura-bold", size: 14)
+        addPhoto.text = "Add Photo"
+        addPhoto.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(addPhoto)
+        
+        commentTxt.placeholder = "Start a new review"
+        commentTxt.font = UIFont(name: "Futura", size: 15)
+        commentTxt.textAlignment = .left
+        commentTxt.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(commentTxt)
+        
+        locationLabel.font = UIFont(name: "Futura", size: 20)
+        locationLabel.text = "Location"
+        locationLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(locationLabel)
+        
+        submitButton.setImage(UIImage(named: "pencil"), for: .normal)
+        submitButton.addTarget(self, action: #selector(submitComment), for: .touchUpInside)
+        submitButton.setTitleColor(.black, for: .normal)
+        submitButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(submitButton)
+        
+        backButton.setImage(UIImage(systemName: "arrow.backward"), for: .normal)
+        backButton.tintColor = .white
+        backButton.addTarget(self, action: #selector(backToMain), for: .touchUpInside)
+        backButton.setTitleColor(.black, for: .normal)
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(backButton)
+        
+        //let parkCommentLayout = UICollectionViewFlowLayout()
+        snappingLayout.snapPosition = .center
+        snappingLayout.minimumLineSpacing = spacing
+        snappingLayout.minimumInteritemSpacing = spacing
+        snappingLayout.scrollDirection = .horizontal
+        
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: snappingLayout)
+        collectionView.decelerationRate = .fast
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(CommentsCollectionViewCell.self, forCellWithReuseIdentifier: commentReuseIdentifier)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.showsHorizontalScrollIndicator = false
+        //collectionView.layer.backgroundColor = UIColor.lightGray.cgColor
+        view.addSubview(collectionView)
+        
+        stackViewName.translatesAutoresizingMaskIntoConstraints = false
+        stackViewName.alignment = .center
+        stackViewName.distribution = .equalSpacing
+        stackViewName.axis = .vertical
+        
+        stackViewName.addArrangedSubview(parkLabel)
+        stackViewName.addArrangedSubview(parkAddress)
+        stackViewName.addArrangedSubview(ParkOpenTime)
+        view.addSubview(stackViewName)
+                
         configure(parkObject: park)
         setupConstraints()
+        startTimer()
+        
     }
     
     func configure(parkObject: Park) {
+        picImageView.image = UIImage(named: String(parkImageDic[parkObject.id]!))
         parkLabel.text = parkObject.name
         parkAddress.text = parkObject.address
         parkFee.text = "\(parkObject.hourlyRate)   \(parkObject.dailyRate)"
         
+        let tpr = OpenHourProcessor(openTime: parkObject.openHours).process()
         
-        let openTime = parkObject.openHours
-        let start = openTime.startIndex
-        let end = openTime.endIndex
-        let index = openTime.index(start, offsetBy: 7)
-        let startT = openTime[start..<index]
-        let endT = openTime[index..<end]
-        
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mma"
-        dateFormatter.timeZone = TimeZone(abbreviation: "EST")
-        let timeStamp = dateFormatter.date(from: String(startT))!
-
-        let coolDateFormatter = DateFormatter()
-        coolDateFormatter.dateFormat = "HH:mm"
-        let coolDateString = coolDateFormatter.string(from: timeStamp)
-        
-        let dateFormatter2 = DateFormatter()
-        dateFormatter2.dateFormat = "'- 'hh:mma"
-        dateFormatter2.timeZone = TimeZone(abbreviation: "EST")
-        let timeStamp2 = dateFormatter2.date(from: String(endT))!
-
-        let coolDateFormatter2 = DateFormatter()
-        coolDateFormatter2.dateFormat = "HH:mm"
-        let coolDateString2 = coolDateFormatter2.string(from: timeStamp2)
-        
-        let coolDateFormatter3 = DateFormatter()
-        coolDateFormatter3.dateFormat = "HH:mm"
-        let currT = coolDateFormatter3.string(from: Date())
-        
-        
-        if (coolDateString <= currT && currT <= coolDateString2) {
-            coolDateFormatter2.dateFormat = "hh:mm a"
-            let coolDateString2 = coolDateFormatter2.string(from: timeStamp2)
-            parkOpen.text = "until \(coolDateString2)"
-            parkOpenStatus.text = "Open"
-            parkOpenStatus.textColor = UIColor(red: 0, green: 0.6, blue: 0.36, alpha: 1)
+        if tpr.start == "12:00 AM" && tpr.end == "11:59 PM" {
+            isOpenLabel.text = "Open"
+            isOpenLabel.textColor = UIColor(red: 0, green: 0.6, blue: 0.36, alpha: 1)
+            untilLabel.text = "all day"
+            ParkOpenTime.text = "Available time: all day"
         } else {
-            coolDateFormatter.dateFormat = "hh:mm a"
-            let coolDateString = coolDateFormatter.string(from: timeStamp)
-            parkOpen.text = "until \(coolDateString)"
-            parkOpenStatus.text = "Close"
-            parkOpenStatus.textColor = .red
+            if tpr.isOpen {
+                untilLabel.text = "until \(tpr.end)"
+                isOpenLabel.text = "Open"
+                isOpenLabel.textColor = UIColor(red: 0, green: 0.6, blue: 0.36, alpha: 1)
+            } else  {
+                untilLabel.text = "until \(tpr.start)"
+                isOpenLabel.text = "Close"
+                isOpenLabel.textColor = .red
+            }
+            ParkOpenTime.text = "Available time: \(tpr.start) - \(tpr.end)"
         }
         
-        
-        coolDateFormatter.dateFormat = "hh:mm a"
-        coolDateFormatter2.dateFormat = "hh:mm a"
-        
-        ParkOpenTime.text = "Available time: \(coolDateFormatter.string(from: timeStamp)) - \(coolDateFormatter2.string(from: timeStamp2))"
     
     }
     
     func setupConstraints() {
         
-        NSLayoutConstraint.activate([
-            block.widthAnchor.constraint(equalTo: view.widthAnchor),
-            block.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.675),
-            block.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            block.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-        ])
+        block.snp.makeConstraints { make in
+            make.width.leading.bottom.equalTo(view)
+            make.height.equalTo(view).multipliedBy(0.75)
+        }
         
-        NSLayoutConstraint.activate([
-            parkLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            parkLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            parkLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80)
-        ])
+        picImageView.snp.makeConstraints { make in
+            make.centerX.width.equalTo(view)
+            make.height.equalTo(view.snp.width)
+            make.bottom.equalTo(block.snp.top).offset(100)
+        }
         
-        NSLayoutConstraint.activate([
-            picImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            picImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            picImageView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            picImageView.heightAnchor.constraint(equalTo: view.widthAnchor)
-        ])
+        blockLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(view)
+            make.bottom.equalTo(block.snp.top).offset(-40)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
+            make.width.equalTo(view).multipliedBy(0.85)
+        }
+
+        parkLabel.snp.makeConstraints { make in
+            make.width.equalTo(view).multipliedBy(0.8)
+        }
         
-        NSLayoutConstraint.activate([
-            parkAddress.topAnchor.constraint(equalTo: parkLabel.bottomAnchor,constant: 5),
-            parkAddress.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0)
-        ])
+        stackViewName.snp.makeConstraints { make in
+            make.centerY.equalTo(blockLabel)
+            make.centerX.equalTo(view)
+        }
         
-        NSLayoutConstraint.activate([
-            ParkOpenTime.topAnchor.constraint(equalTo: parkAddress.bottomAnchor,constant: 5),
-            ParkOpenTime.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0)
-        ])
+        isOpenLabel.snp.makeConstraints { make in
+            make.top.equalTo(block).offset(20)
+            make.leading.equalTo(view).offset(20)
+        }
         
-        NSLayoutConstraint.activate([
-            parkOpenStatus.topAnchor.constraint(equalTo: block.topAnchor,constant: 30),
-            parkOpenStatus.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50)
-        ])
+        untilLabel.snp.makeConstraints { make in
+            make.top.equalTo(block).offset(20)
+            make.leading.equalTo(isOpenLabel.snp.trailing).offset(10)
+        }
         
-        NSLayoutConstraint.activate([
-            parkOpen.topAnchor.constraint(equalTo: block.topAnchor,constant: 30),
-            parkOpen.leadingAnchor.constraint(equalTo: parkOpenStatus.trailingAnchor, constant: 10)
-        ])
+        parkFee.snp.makeConstraints { make in
+            make.top.equalTo(untilLabel.snp.bottom).offset(10)
+            make.leading.equalTo(view).offset(20)
+        }
         
-        NSLayoutConstraint.activate([
-            parkFee.topAnchor.constraint(equalTo: parkOpen.topAnchor,constant: 30),
-            parkFee.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50)
-        ])
+        userComment.snp.makeConstraints { make in
+            make.top.equalTo(parkFee.snp.bottom).offset(24)
+            make.leading.equalTo(view).offset(20)
+        }
     
+        commentBlock.snp.makeConstraints { make in
+            make.width.equalTo(242)
+            make.height.equalTo(36)
+            make.leading.equalTo(view).offset(20)
+            make.top.equalTo(userComment.snp.bottom).offset(12)
+        }
         
+        addPhoto.snp.makeConstraints { make in
+            make.centerY.equalTo(commentBlock)
+            make.leading.equalTo(commentBlock.snp.trailing).offset(20)
+        }
+        
+        commentTxt.snp.makeConstraints { make in
+            make.centerY.equalTo(commentBlock)
+            make.leading.equalTo(commentBlock).offset(40)
+            make.trailing.equalTo(commentBlock).offset(-60)
+        }
+        
+        locationLabel.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom).offset(24)
+            make.leading.equalTo(view).offset(20)
+        }
+        
+        submitButton.snp.makeConstraints { make in
+            make.width.height.equalTo(20)
+            make.centerY.equalTo(commentBlock)
+            make.leading.equalTo(commentBlock.snp.trailing).offset(-30)
+        }
+        
+        backButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.leading.equalTo(view).offset(20)
+        }
+        
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(commentBlock.snp.bottom).offset(20)
+            make.leading.equalTo(view).offset(20)
+            make.height.equalTo(133)
+            make.trailing.equalTo(view).offset(-20)
+        }
+    }
+    
+    @objc func submitComment() {
+        print("submit")
+        
+        if let unwrapcomment = commentTxt.text {
+            NetworkManager.addComment(park_id: park.id, comment: unwrapcomment) { comment in
+                self.parkComment = [comment] + self.parkComment
+                self.collectionView.reloadData()
+                self.collectionView?.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .left, animated: true)
+            }
+        }
+    }
+    
+    @objc func backToMain() {
+        dismiss(animated: true)
+
+    }
+    
+    
+    // modified https://gist.github.com/wassim93/4611f509618986b831a40eb38064451a
+    func startTimer() {
+
+        _ =  Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.scrollAutomatically), userInfo: nil, repeats: true)
+
     }
 
+
+    @objc func scrollAutomatically(_ timer1: Timer) {
+        
+        if let coll  = collectionView {
+            for cell in coll.visibleCells {
+                let indexPath: IndexPath? = coll.indexPath(for: cell)
+                if ((indexPath?.row)! == parkComment.count - 1) {
+                    direction = false
+                }
+                if (direction == true){
+                    let indexPath1: IndexPath?
+                    indexPath1 = IndexPath.init(row: (indexPath?.row)! + 1, section: (indexPath?.section)!)
+
+                    coll.scrollToItem(at: indexPath1!, at: .right, animated: true)
+                    
+                    if ((indexPath?.row)! == parkComment.count - 2) {
+                        direction.toggle()
+                    }
+                }
+                else{
+                    let indexPath1: IndexPath?
+                    indexPath1 = IndexPath.init(row: (indexPath?.row)! - 1, section: (indexPath?.section)!)
+                    coll.scrollToItem(at: indexPath1!, at: .left, animated: true)
+                    
+                    if ((indexPath?.row)! == 0) {
+                        direction.toggle()
+                    }
+                }
+
+            }
+        }
+    }
+    
+    @objc func imageTapped(sender: UITapGestureRecognizer) {
+        let imageView = sender.view as! UIImageView
+        if imageView.image != UIImage(systemName: "car.fill") {
+            let newImageView = UIImageView(image: imageView.image)
+            newImageView.frame = UIScreen.main.bounds
+            //newImageView.backgroundColor = .white
+            newImageView.contentMode = .scaleAspectFit
+            newImageView.isUserInteractionEnabled = true
+            let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage(sender:)))
+            newImageView.addGestureRecognizer(tap)
+            self.view.addSubview(newImageView)
+            self.navigationController?.isNavigationBarHidden = true
+            self.tabBarController?.tabBar.isHidden = true
+        }
+    }
+
+    @objc func dismissFullscreenImage(sender: UITapGestureRecognizer) {
+        self.navigationController?.isNavigationBarHidden = false
+        self.tabBarController?.tabBar.isHidden = false
+        sender.view?.removeFromSuperview()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+}
+
+extension DetailViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return parkComment.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: commentReuseIdentifier, for: indexPath) as? CommentsCollectionViewCell {
+            cell.configure(comment: parkComment[indexPath.row])
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(sender:)))
+            cell.commentFig.isUserInteractionEnabled = true
+            cell.commentFig.addGestureRecognizer(tapGestureRecognizer)
+            return cell
+        }
+        else{
+            return UICollectionViewCell()
+        }
+    }
+}
+
+extension DetailViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 350, height: 133)
+    }
 }

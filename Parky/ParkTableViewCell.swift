@@ -6,144 +6,141 @@
 //
 
 import UIKit
+import SnapKit
 
 class ParkTableViewCell: UITableViewCell {
     
     let parkImageView = UIImageView()
     let parkLabel = UILabel()
     let parkAddress = UILabel()
-    let parkOpen = UILabel()
+    let untilLabel = UILabel()
     let parkFee = UILabel()
-    let parkOpenStatus = UILabel()
+    let isOpenLabel = UILabel()
     
-
+    let stackView = UIStackView()
+    let openUntilStackView = UIStackView()
+    
+    var parkImageDic: [Int: Int] = [:]
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
+        
+        backgroundColor = .clear // very important
+        layer.masksToBounds = false
+        layer.shadowOpacity = 0.05
+        layer.shadowRadius = 4
+        layer.shadowOffset = CGSize(width: 0, height: 0)
+        layer.shadowColor = UIColor.black.cgColor
+        
+        // add corner radius on `contentView`
+        contentView.backgroundColor = .white
+        contentView.layer.cornerRadius = 15
+        
+        for i in 1..<22 {
+            parkImageDic[i] = i
+        }
+        
         setupViews()
         setupConstraints()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: -2.5, right: 10))
+    }
+    
     func setupViews() {
         
-        parkImageView.image = UIImage(systemName: "car.fill")
         parkImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(parkImageView)
         
         parkLabel.textAlignment = .left
-        parkLabel.font = UIFont(name: "Futura-bold", size: 12)
+        parkLabel.font = UIFont(name: "Futura-bold", size: 18)
         parkLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(parkLabel)
         
-        parkAddress.font = UIFont(name: "Futura", size: 10)
+        parkAddress.font = UIFont(name: "Futura", size: 14)
         parkAddress.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(parkAddress)
-
-        parkOpen.font = UIFont(name: "Futura", size: 10)
-        parkOpen.textColor = .darkGray
-        parkOpen.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(parkOpen)
-
-        parkOpenStatus.font = UIFont(name: "Futura-bold", size: 10)
-        parkOpenStatus.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(parkOpenStatus)
+        
+        untilLabel.font = UIFont(name: "Futura", size: 14)
+        untilLabel.textColor = .darkGray
+        untilLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(untilLabel)
+        
+        isOpenLabel.font = UIFont(name: "Futura-bold", size: 14)
+        isOpenLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(isOpenLabel)
+        
+        openUntilStackView.translatesAutoresizingMaskIntoConstraints = false
+        openUntilStackView.addArrangedSubview(isOpenLabel)
+        openUntilStackView.addArrangedSubview(untilLabel)
+        openUntilStackView.spacing = 5
+        openUntilStackView.alignment = .leading
+        openUntilStackView.axis = .horizontal
         
         parkFee.font = UIFont(name: "Futura", size: 10)
         parkFee.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(parkFee)
         
-
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.alignment = .leading
+        stackView.distribution = .equalSpacing
+        stackView.axis = .vertical
+        
+        stackView.addArrangedSubview(parkLabel)
+        stackView.addArrangedSubview(parkAddress)
+        stackView.addArrangedSubview(parkFee)
+        stackView.addArrangedSubview(openUntilStackView)
+        contentView.addSubview(stackView)
+        
+        
     }
     
     func setupConstraints() {
+        let padding: CGFloat = 20.0
         
-        NSLayoutConstraint.activate([
-            parkImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 10),
-            parkImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.15),
-            parkImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.15),
-            parkImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            parkImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
-        ])
+        parkImageView.snp.makeConstraints { make in
+            make.height.width.equalTo(contentView.snp.height)
+            make.leading.equalTo(contentView)
+            make.centerY.equalToSuperview()
+        }
         
-
-        NSLayoutConstraint.activate([
-            parkLabel.leadingAnchor.constraint(equalTo: parkImageView.trailingAnchor,constant: 10),
-            parkLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -20)
-        ])
-        
-        NSLayoutConstraint.activate([
-            parkAddress.leadingAnchor.constraint(equalTo: parkImageView.trailingAnchor,constant: 10),
-            parkAddress.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0)
-        ])
-        
-        NSLayoutConstraint.activate([
-            parkOpen.leadingAnchor.constraint(equalTo: parkOpenStatus.trailingAnchor,constant: 5),
-            parkOpen.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 20)
-        ])
-        
-        NSLayoutConstraint.activate([
-            parkFee.leadingAnchor.constraint(equalTo: parkOpen.trailingAnchor,constant: 10),
-            parkFee.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 20)
-        ])
-    
-        NSLayoutConstraint.activate([
-            parkOpenStatus.leadingAnchor.constraint(equalTo: parkImageView.trailingAnchor,constant: 10),
-            parkOpenStatus.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 20)
-        ])
+        stackView.snp.makeConstraints { make in
+            make.leading.equalTo(parkImageView.snp.trailing).offset(padding)
+            make.top.equalTo(contentView).offset(padding)
+            make.bottom.equalTo(contentView).offset(-padding)
+            make.trailing.equalTo(contentView).offset(-padding)
+            make.height.equalTo(100)
+        }
         
     }
     
     func configure(parkObject: Park) {
+        parkImageView.image = UIImage(named: String(parkImageDic[parkObject.id]!))
         parkLabel.text = parkObject.name
         parkAddress.text = parkObject.address
         parkFee.text = "\(parkObject.hourlyRate) \(parkObject.dailyRate)"
         
+        let tpr = OpenHourProcessor(openTime: parkObject.openHours).process()
         
-        let openTime = parkObject.openHours
-        let start = openTime.startIndex
-        let end = openTime.endIndex
-        let index = openTime.index(start, offsetBy: 7)
-        let startT = openTime[start..<index]
-        let endT = openTime[index..<end]
-        
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mma"
-        dateFormatter.timeZone = TimeZone(abbreviation: "EST")
-        let timeStamp = dateFormatter.date(from: String(startT))!
-
-        let coolDateFormatter = DateFormatter()
-        coolDateFormatter.dateFormat = "HH:mm"
-        let coolDateString = coolDateFormatter.string(from: timeStamp)
-        
-        let dateFormatter2 = DateFormatter()
-        dateFormatter2.dateFormat = "'- 'hh:mma"
-        dateFormatter2.timeZone = TimeZone(abbreviation: "EST")
-        let timeStamp2 = dateFormatter2.date(from: String(endT))!
-
-        let coolDateFormatter2 = DateFormatter()
-        coolDateFormatter2.dateFormat = "HH:mm"
-        let coolDateString2 = coolDateFormatter2.string(from: timeStamp2)
-        
-        let coolDateFormatter3 = DateFormatter()
-        coolDateFormatter3.dateFormat = "HH:mm"
-        let currT = coolDateFormatter3.string(from: Date())
-        
-        
-        if (coolDateString <= currT && currT <= coolDateString2) {
-            coolDateFormatter2.dateFormat = "hh:mm a"
-            let coolDateString2 = coolDateFormatter2.string(from: timeStamp2)
-            parkOpen.text = "until \(coolDateString2)"
-            parkOpenStatus.text = "Open"
-            parkOpenStatus.textColor = UIColor(red: 0, green: 0.6, blue: 0.36, alpha: 1)
+        if tpr.start == "12:00 AM" && tpr.end == "11:59 PM" {
+            isOpenLabel.text = "Open"
+            isOpenLabel.textColor = UIColor(red: 0, green: 0.6, blue: 0.36, alpha: 1)
+            untilLabel.text = "all day"
         } else {
-            coolDateFormatter.dateFormat = "hh:mm a"
-            let coolDateString = coolDateFormatter.string(from: timeStamp)
-            parkOpen.text = "until \(coolDateString)"
-            parkOpenStatus.text = "Close"
-            parkOpenStatus.textColor = .red
+            if tpr.isOpen {
+                untilLabel.text = "until \(tpr.end)"
+                isOpenLabel.text = "Open"
+                isOpenLabel.textColor = UIColor(red: 0, green: 0.6, blue: 0.36, alpha: 1)
+            } else  {
+                untilLabel.text = "until \(tpr.start)"
+                isOpenLabel.text = "Close"
+                isOpenLabel.textColor = .red
+            }
         }
-    
+        
     }
     
     
