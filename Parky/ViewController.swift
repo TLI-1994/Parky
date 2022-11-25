@@ -92,7 +92,9 @@ extension ViewController: UITableViewDataSource {
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        present(DetailViewController(park: shownParkData[indexPath.row]), animated: true)
+        let cell = parkTableView.cellForRow(at: indexPath) as! ParkTableViewCell
+        present(DetailViewController(park: shownParkData[indexPath.row], delegate: cell), animated: true)
+        
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

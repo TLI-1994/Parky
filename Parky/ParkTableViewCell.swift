@@ -22,6 +22,10 @@ class ParkTableViewCell: UITableViewCell {
     
     var parkImageDic: [Int: Int] = [:]
     
+    let parkLike = UIButton()
+    var like:Bool = false
+    var likeDic:[Bool:String] = [:]
+        
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
@@ -40,6 +44,9 @@ class ParkTableViewCell: UITableViewCell {
         for i in 1..<22 {
             parkImageDic[i] = i
         }
+        
+        likeDic[true] = "suit.heart.fill"
+        likeDic[false] = "suit.heart"
         
         setupViews()
         setupConstraints()
@@ -95,6 +102,13 @@ class ParkTableViewCell: UITableViewCell {
         stackView.addArrangedSubview(openUntilStackView)
         contentView.addSubview(stackView)
         
+        parkLike.setImage(UIImage(systemName: "suit.heart"), for: .normal)
+        parkLike.tintColor = .systemRed
+        parkLike.addTarget(self, action: #selector(likeHeart), for: .touchUpInside)
+        parkLike.setTitleColor(.black, for: .normal)
+        parkLike.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(parkLike)
+        
         
     }
     
@@ -113,6 +127,11 @@ class ParkTableViewCell: UITableViewCell {
             make.bottom.equalTo(contentView).offset(-padding)
             make.trailing.equalTo(contentView).offset(-padding)
             make.height.equalTo(100)
+        }
+        
+        parkLike.snp.makeConstraints {  make in
+            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(10)
+            make.trailing.equalTo(contentView).offset(-10)
         }
         
     }
@@ -143,9 +162,22 @@ class ParkTableViewCell: UITableViewCell {
         
     }
     
+    @objc func likeHeart() {
+        like.toggle()
+        parkLike.setImage(UIImage(systemName: likeDic[like]!), for: .normal)
+        
+    }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
+extension ParkTableViewCell: LikeDelegate {
+    func LikeOrNot(like: Bool) {
+        parkLike.setImage(UIImage(systemName: likeDic[like]!), for: .normal)
+    }
+    
+    
+}
