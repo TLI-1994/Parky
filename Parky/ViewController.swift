@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     var shownParkData: [Park] = []
     
     let parkReuseIdentifier = "parkReuseIdentifier"
+    let refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +28,16 @@ class ViewController: UIViewController {
         parkTableView.delegate = self
         parkTableView.dataSource = self
         parkTableView.register(ParkTableViewCell.self, forCellReuseIdentifier: parkReuseIdentifier)
+        parkTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         view.addSubview(parkTableView)
+        
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        
+        if #available(iOS 10.0, *) {
+            parkTableView.refreshControl = refreshControl
+        } else {
+            parkTableView.addSubview(refreshControl)
+        }
         
         createDummyData()
         setupConstraints()
@@ -42,13 +52,22 @@ class ViewController: UIViewController {
         }
     }
     
+    @objc func refreshData() {
+
+        NetworkManager.getAllParks { parks in
+            self.parkData = parks
+            self.shownParkData = self.parkData
+            self.parkTableView.reloadData()
+            self.refreshControl.endRefreshing()
+        }
+    }
+    
     func setupConstraints() {
-        NSLayoutConstraint.activate([
-            parkTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            parkTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            parkTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            parkTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
+        
+        parkTableView.snp.makeConstraints { make in
+            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.equalTo(view)
+        }
     }
 
 }
@@ -73,7 +92,16 @@ extension ViewController: UITableViewDataSource {
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        navigationController?.pushViewController(DetailViewController(park: shownParkData[indexPath.row]), animated: true)
+        present(DetailViewController(park: shownParkData[indexPath.row]), animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // this will turn on `masksToBounds` just before showing the cell
+        cell.contentView.layer.masksToBounds = true
+        let radius = cell.contentView.layer.cornerRadius
+        cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: radius).cgPath
+    }
+    
+    
     
 }

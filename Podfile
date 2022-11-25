@@ -9,5 +9,7 @@ target 'Parky' do
   pod 'Alamofire'
   pod 'SnapKit'
   pod 'lottie-ios'
+  pod 'LazyImage'
+  pod 'SnappingLayout'
 
 end
