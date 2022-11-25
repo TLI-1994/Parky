@@ -40,11 +40,16 @@ class DetailViewController: UIViewController {
     var collectionView: UICollectionView!
     let commentReuseIdentifier: String = "commentReuseIdentifier"
     
-    let park: Park
+    let parkLike = UIButton()
+    var like:Bool = false
+    var likeDic:[Bool:String] = [:]
     
-    init(park: Park) {
+    let park: Park
+    weak var delegate: LikeDelegate?
+    
+    init(park: Park, delegate: LikeDelegate) {
         self.park = park
-        //self.delegate = delegate
+        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -55,6 +60,10 @@ class DetailViewController: UIViewController {
         for i in 1..<22 {
             parkImageDic[i] = i
         }
+        
+        likeDic[true] = "suit.heart.fill"
+        likeDic[false] = "suit.heart"
+        
         // latest comment
         parkComment = park.comments//.suffix(5).reversed()
         
@@ -168,7 +177,14 @@ class DetailViewController: UIViewController {
         stackViewName.addArrangedSubview(parkAddress)
         stackViewName.addArrangedSubview(ParkOpenTime)
         view.addSubview(stackViewName)
-                
+        
+        parkLike.setImage(UIImage(systemName: "suit.heart"), for: .normal)
+        parkLike.tintColor = .systemRed
+        parkLike.addTarget(self, action: #selector(likeHeart), for: .touchUpInside)
+        parkLike.setTitleColor(.black, for: .normal)
+        parkLike.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(parkLike)
+        
         configure(parkObject: park)
         setupConstraints()
         startTimer()
@@ -293,6 +309,11 @@ class DetailViewController: UIViewController {
             make.height.equalTo(133)
             make.trailing.equalTo(view).offset(-20)
         }
+        
+        parkLike.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.trailing.equalTo(view).offset(-20)
+        }
     }
     
     @objc func submitComment() {
@@ -310,6 +331,13 @@ class DetailViewController: UIViewController {
     @objc func backToMain() {
         dismiss(animated: true)
 
+    }
+    
+    @objc func likeHeart() {
+        like.toggle()
+        parkLike.setImage(UIImage(systemName: likeDic[like]!), for: .normal)
+        delegate?.LikeOrNot(like: like)
+        
     }
     
     
@@ -405,3 +433,8 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: 350, height: 133)
     }
 }
+
+protocol LikeDelegate: UITableViewCell {
+    func LikeOrNot(like: Bool)
+}
+    
