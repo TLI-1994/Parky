@@ -1,24 +1,32 @@
 PODS:
   - Alamofire (5.6.2)
+  - LazyImage (7.0.1)
   - lottie-ios (3.5.0)
   - SnapKit (5.6.0)
+  - SnappingLayout (0.1.4)
 
 DEPENDENCIES:
   - Alamofire
+  - LazyImage
   - lottie-ios
   - SnapKit
+  - SnappingLayout
 
 SPEC REPOS:
   trunk:
     - Alamofire
+    - LazyImage
     - lottie-ios
     - SnapKit
+    - SnappingLayout
 
 SPEC CHECKSUMS:
   Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
+  LazyImage: 4db5288d8660b28e64e60c57f5b5d414af922160
   lottie-ios: c55158d67d0629a260625cc2ded2052b829e3c3e
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+  SnappingLayout: 00aee431f94469bca16910990760e8ebbcd79e18
 
-PODFILE CHECKSUM: 01efe262fb53f3722936f06cc15b227bb178181d
+PODFILE CHECKSUM: 59203c6063c7bd6e0d4f70049404503dad1fe306
 
 COCOAPODS: 1.11.3
