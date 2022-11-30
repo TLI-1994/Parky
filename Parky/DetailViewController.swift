@@ -440,6 +440,9 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
 }
 
 protocol LikeDelegate: UITableViewCell {
+    // TODO: bug fix
+    // currently it seems that the ParkTableViewCell need two clicks on the like
+    // button to update the like status.
     func LikeOrNot(like: Bool)
 }
     
