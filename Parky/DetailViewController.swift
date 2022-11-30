@@ -181,7 +181,7 @@ class DetailViewController: UIViewController {
         
         parkLike.setImage(UIImage(systemName: "suit.heart"), for: .normal)
         parkLike.tintColor = .systemRed
-        parkLike.addTarget(self, action: #selector(likeHeart), for: .touchUpInside)
+        parkLike.addTarget(self, action: #selector(toggleLikeButton), for: .touchUpInside)
         parkLike.setTitleColor(.black, for: .normal)
         parkLike.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(parkLike)
@@ -220,7 +220,6 @@ class DetailViewController: UIViewController {
         
         if isLiked {
             parkLike.setImage(UIImage(systemName: likeDic[isLiked]!), for: .normal)
-            delegate?.LikeOrNot(like: isLiked)
         }
     
     }
@@ -338,10 +337,10 @@ class DetailViewController: UIViewController {
 
     }
     
-    @objc func likeHeart() {
+    @objc func toggleLikeButton() {
         isLiked.toggle()
         parkLike.setImage(UIImage(systemName: likeDic[isLiked]!), for: .normal)
-        delegate?.LikeOrNot(like: isLiked)
+        delegate?.toggleLikeButton()
         
     }
     
@@ -440,9 +439,6 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
 }
 
 protocol LikeDelegate: UITableViewCell {
-    // TODO: bug fix
-    // currently it seems that the ParkTableViewCell need two clicks on the like
-    // button to update the like status.
-    func LikeOrNot(like: Bool)
+    func toggleLikeButton()
 }
     

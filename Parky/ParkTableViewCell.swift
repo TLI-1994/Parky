@@ -104,7 +104,7 @@ class ParkTableViewCell: UITableViewCell {
         
         parkLike.setImage(UIImage(systemName: "suit.heart"), for: .normal)
         parkLike.tintColor = .systemRed
-        parkLike.addTarget(self, action: #selector(likeHeart), for: .touchUpInside)
+        parkLike.addTarget(self, action: #selector(toggleLikeButton), for: .touchUpInside)
         parkLike.setTitleColor(.black, for: .normal)
         parkLike.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(parkLike)
@@ -162,21 +162,15 @@ class ParkTableViewCell: UITableViewCell {
         
     }
     
-    @objc func likeHeart() {
-        isLiked.toggle()
-        parkLike.setImage(UIImage(systemName: likeDic[isLiked]!), for: .normal)
-        
-    }
-    
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
 extension ParkTableViewCell: LikeDelegate {
-    func LikeOrNot(like: Bool) {
-        parkLike.setImage(UIImage(systemName: likeDic[like]!), for: .normal)
+    @objc func toggleLikeButton() {
+        isLiked.toggle()
+        parkLike.setImage(UIImage(systemName: likeDic[isLiked]!), for: .normal)
     }
     
     
