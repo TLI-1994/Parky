@@ -42,7 +42,6 @@ class DetailViewController: UIViewController {
     
     let parkLike = UIButton()
     var isLiked:Bool = false
-    var likeDic:[Bool:String] = [:]
     
     let park: Park
     weak var delegate: LikeDelegate?
@@ -62,13 +61,8 @@ class DetailViewController: UIViewController {
             parkImageDic[i] = i
         }
         
-        likeDic[true] = "suit.heart.fill"
-        likeDic[false] = "suit.heart"
-        
         // latest comment
-        parkComment = park.comments//.suffix(5).reversed()
-        
-        //picImageView.contentMode = .scaleAspectFit
+        parkComment = park.comments
         
         picImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(picImageView)
@@ -83,38 +77,41 @@ class DetailViewController: UIViewController {
         blockLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(blockLabel)
         
+        let futuraFont = UIFont(name: "Futura", size: 16)!
+        let futuraBoldFont = UIFont(name: "Futura-bold", size: 20)!
+        
         parkLabel.text = park.name
-        parkLabel.font = UIFont(name: "Futura-bold", size: 20)
+        parkLabel.font = futuraBoldFont
         parkLabel.numberOfLines = 2
         parkLabel.textColor = .black
         parkLabel.textAlignment = .center
         parkLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(parkLabel)
         
-        parkAddress.font = UIFont(name: "Futura", size: 16)
+        parkAddress.font = futuraFont
         parkAddress.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(parkAddress)
 
-        untilLabel.font = UIFont(name: "Futura", size: 16)
+        untilLabel.font = futuraFont
         untilLabel.textColor = .darkGray
         untilLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(untilLabel)
         
-        ParkOpenTime.font = UIFont(name: "Futura", size: 16)
+        ParkOpenTime.font = futuraFont
         ParkOpenTime.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         ParkOpenTime.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(ParkOpenTime)
 
-        isOpenLabel.font = UIFont(name: "Futura-bold", size: 16)
+        isOpenLabel.font = futuraBoldFont.withSize(16)
         isOpenLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(isOpenLabel)
         
-        parkFee.font = UIFont(name: "Futura", size: 12)
+        parkFee.font = futuraFont.withSize(12)
         parkFee.numberOfLines = 2
         parkFee.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(parkFee)
         
-        userComment.font = UIFont(name: "Futura", size: 20)
+        userComment.font = futuraFont.withSize(20)
         userComment.text = "Comment"
         userComment.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(userComment)
@@ -124,18 +121,18 @@ class DetailViewController: UIViewController {
         commentBlock.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(commentBlock)
         
-        addPhoto.font = UIFont(name: "Futura-bold", size: 14)
+        addPhoto.font = futuraBoldFont.withSize(14)
         addPhoto.text = "Add Photo"
         addPhoto.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(addPhoto)
         
         commentTxt.placeholder = "Start a new review"
-        commentTxt.font = UIFont(name: "Futura", size: 15)
+        commentTxt.font = futuraFont.withSize(15)
         commentTxt.textAlignment = .left
         commentTxt.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(commentTxt)
         
-        locationLabel.font = UIFont(name: "Futura", size: 20)
+        locationLabel.font = futuraFont.withSize(20)
         locationLabel.text = "Location"
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(locationLabel)
@@ -219,7 +216,7 @@ class DetailViewController: UIViewController {
         }
         
         if isLiked {
-            parkLike.setImage(UIImage(systemName: likeDic[isLiked]!), for: .normal)
+            parkLike.setImage(UIImage(systemName: makeLikeImageName()), for: .normal)
         }
     
     }
@@ -339,9 +336,17 @@ class DetailViewController: UIViewController {
     
     @objc func toggleLikeButton() {
         isLiked.toggle()
-        parkLike.setImage(UIImage(systemName: likeDic[isLiked]!), for: .normal)
+        parkLike.setImage(UIImage(systemName: makeLikeImageName()), for: .normal)
         delegate?.toggleLikeButton()
         
+    }
+    
+    func makeLikeImageName() -> String {
+        if isLiked {
+            return "suit.heart.fill"
+        } else {
+            return "suit.heart"
+        }
     }
     
     
