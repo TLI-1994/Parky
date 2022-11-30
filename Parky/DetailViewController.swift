@@ -32,7 +32,6 @@ class DetailViewController: UIViewController {
     
     let locationLabel = UILabel()
     
-    var parkImageDic: [Int: Int] = [:]
     var parkComment: [Comment] = []
     let spacing: CGFloat = 10
     var direction: Bool = true
@@ -40,8 +39,8 @@ class DetailViewController: UIViewController {
     var collectionView: UICollectionView!
     let commentReuseIdentifier: String = "commentReuseIdentifier"
     
-    let parkLike = UIButton()
-    var isLiked:Bool = false
+    let likeButton = UIButton()
+    var isLiked: Bool = false
     
     let park: Park
     weak var delegate: LikeDelegate?
@@ -56,10 +55,6 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
-        for i in 1..<22 {
-            parkImageDic[i] = i
-        }
         
         // latest comment
         parkComment = park.comments
@@ -91,7 +86,7 @@ class DetailViewController: UIViewController {
         parkAddress.font = futuraFont
         parkAddress.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(parkAddress)
-
+        
         untilLabel.font = futuraFont
         untilLabel.textColor = .darkGray
         untilLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -101,7 +96,7 @@ class DetailViewController: UIViewController {
         ParkOpenTime.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         ParkOpenTime.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(ParkOpenTime)
-
+        
         isOpenLabel.font = futuraBoldFont.withSize(16)
         isOpenLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(isOpenLabel)
@@ -176,12 +171,12 @@ class DetailViewController: UIViewController {
         stackViewName.addArrangedSubview(ParkOpenTime)
         view.addSubview(stackViewName)
         
-        parkLike.setImage(UIImage(systemName: "suit.heart"), for: .normal)
-        parkLike.tintColor = .systemRed
-        parkLike.addTarget(self, action: #selector(toggleLikeButton), for: .touchUpInside)
-        parkLike.setTitleColor(.black, for: .normal)
-        parkLike.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(parkLike)
+        likeButton.setImage(UIImage(systemName: "suit.heart"), for: .normal)
+        likeButton.tintColor = .systemRed
+        likeButton.addTarget(self, action: #selector(toggleLikeButton), for: .touchUpInside)
+        likeButton.setTitleColor(.black, for: .normal)
+        likeButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(likeButton)
         
         configure(parkObject: park)
         setupConstraints()
@@ -190,7 +185,7 @@ class DetailViewController: UIViewController {
     }
     
     func configure(parkObject: Park) {
-        picImageView.image = UIImage(named: String(parkImageDic[parkObject.id]!))
+        picImageView.image = UIImage(named: String(parkObject.id))
         parkLabel.text = parkObject.name
         parkAddress.text = parkObject.address
         parkFee.text = "\(parkObject.hourlyRate)   \(parkObject.dailyRate)"
@@ -216,9 +211,9 @@ class DetailViewController: UIViewController {
         }
         
         if isLiked {
-            parkLike.setImage(UIImage(systemName: makeLikeImageName()), for: .normal)
+            likeButton.setImage(UIImage(systemName: makeLikeImageName()), for: .normal)
         }
-    
+        
     }
     
     func setupConstraints() {
@@ -240,7 +235,7 @@ class DetailViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
             make.width.equalTo(view).multipliedBy(0.85)
         }
-
+        
         parkLabel.snp.makeConstraints { make in
             make.width.equalTo(view).multipliedBy(0.8)
         }
@@ -269,7 +264,7 @@ class DetailViewController: UIViewController {
             make.top.equalTo(parkFee.snp.bottom).offset(24)
             make.leading.equalTo(view).offset(20)
         }
-    
+        
         commentBlock.snp.makeConstraints { make in
             make.width.equalTo(242)
             make.height.equalTo(36)
@@ -311,7 +306,7 @@ class DetailViewController: UIViewController {
             make.trailing.equalTo(view).offset(-20)
         }
         
-        parkLike.snp.makeConstraints { make in
+        likeButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.trailing.equalTo(view).offset(-20)
         }
@@ -331,12 +326,12 @@ class DetailViewController: UIViewController {
     
     @objc func backToMain() {
         dismiss(animated: true)
-
+        
     }
     
     @objc func toggleLikeButton() {
         isLiked.toggle()
-        parkLike.setImage(UIImage(systemName: makeLikeImageName()), for: .normal)
+        likeButton.setImage(UIImage(systemName: makeLikeImageName()), for: .normal)
         delegate?.toggleLikeButton()
         
     }
@@ -352,12 +347,12 @@ class DetailViewController: UIViewController {
     
     // modified https://gist.github.com/wassim93/4611f509618986b831a40eb38064451a
     func startTimer() {
-
+        
         _ =  Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.scrollAutomatically), userInfo: nil, repeats: true)
-
+        
     }
-
-
+    
+    
     @objc func scrollAutomatically(_ timer1: Timer) {
         
         if let coll  = collectionView {
@@ -369,7 +364,7 @@ class DetailViewController: UIViewController {
                 if (direction == true){
                     let indexPath1: IndexPath?
                     indexPath1 = IndexPath.init(row: (indexPath?.row)! + 1, section: (indexPath?.section)!)
-
+                    
                     coll.scrollToItem(at: indexPath1!, at: .right, animated: true)
                     
                     if ((indexPath?.row)! == parkComment.count - 2) {
@@ -385,7 +380,7 @@ class DetailViewController: UIViewController {
                         direction.toggle()
                     }
                 }
-
+                
             }
         }
     }
@@ -405,7 +400,7 @@ class DetailViewController: UIViewController {
             self.tabBarController?.tabBar.isHidden = true
         }
     }
-
+    
     @objc func dismissFullscreenImage(sender: UITapGestureRecognizer) {
         self.navigationController?.isNavigationBarHidden = false
         self.tabBarController?.tabBar.isHidden = false
@@ -415,7 +410,7 @@ class DetailViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
 }
 
 extension DetailViewController: UICollectionViewDataSource {
@@ -446,4 +441,4 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
 protocol LikeDelegate: UITableViewCell {
     func toggleLikeButton()
 }
-    
+
