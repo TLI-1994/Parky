@@ -23,7 +23,7 @@ class ParkTableViewCell: UITableViewCell {
     var parkImageDic: [Int: Int] = [:]
     
     let parkLike = UIButton()
-    var like:Bool = false
+    var isLiked:Bool = false
     var likeDic:[Bool:String] = [:]
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -163,8 +163,8 @@ class ParkTableViewCell: UITableViewCell {
     }
     
     @objc func likeHeart() {
-        like.toggle()
-        parkLike.setImage(UIImage(systemName: likeDic[like]!), for: .normal)
+        isLiked.toggle()
+        parkLike.setImage(UIImage(systemName: likeDic[isLiked]!), for: .normal)
         
     }
     

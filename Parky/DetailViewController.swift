@@ -41,15 +41,16 @@ class DetailViewController: UIViewController {
     let commentReuseIdentifier: String = "commentReuseIdentifier"
     
     let parkLike = UIButton()
-    var like:Bool = false
+    var isLiked:Bool = false
     var likeDic:[Bool:String] = [:]
     
     let park: Park
     weak var delegate: LikeDelegate?
     
-    init(park: Park, delegate: LikeDelegate) {
+    init(park: Park, delegate: LikeDelegate, isLiked: Bool) {
         self.park = park
         self.delegate = delegate
+        self.isLiked = isLiked
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -217,6 +218,10 @@ class DetailViewController: UIViewController {
             ParkOpenTime.text = "Available time: \(tpr.start) - \(tpr.end)"
         }
         
+        if isLiked {
+            parkLike.setImage(UIImage(systemName: likeDic[isLiked]!), for: .normal)
+            delegate?.LikeOrNot(like: isLiked)
+        }
     
     }
     
@@ -334,9 +339,9 @@ class DetailViewController: UIViewController {
     }
     
     @objc func likeHeart() {
-        like.toggle()
-        parkLike.setImage(UIImage(systemName: likeDic[like]!), for: .normal)
-        delegate?.LikeOrNot(like: like)
+        isLiked.toggle()
+        parkLike.setImage(UIImage(systemName: likeDic[isLiked]!), for: .normal)
+        delegate?.LikeOrNot(like: isLiked)
         
     }
     
