@@ -24,7 +24,7 @@ class DetailViewController: UIViewController {
     let isOpenLabel = UILabel()
     
     let userComment = UILabel()
-    let addPhoto = UILabel()
+    let addPhotoButton = UIButton()
     let commentBlock = UIView()
     
     var commentTxt = UITextField()
@@ -38,6 +38,7 @@ class DetailViewController: UIViewController {
     
     var collectionView: UICollectionView!
     let commentReuseIdentifier: String = "commentReuseIdentifier"
+    var imageStringData: String?
     
     let likeButton = UIButton()
     var isLiked: Bool = false
@@ -57,7 +58,7 @@ class DetailViewController: UIViewController {
         view.backgroundColor = .white
         
         // latest comment
-        parkComment = park.comments
+        parkComment = park.comments.reversed()
         
         picImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(picImageView)
@@ -116,10 +117,12 @@ class DetailViewController: UIViewController {
         commentBlock.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(commentBlock)
         
-        addPhoto.font = futuraBoldFont.withSize(14)
-        addPhoto.text = "Add Photo"
-        addPhoto.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(addPhoto)
+        addPhotoButton.setTitle("Add Photo", for: .normal)
+        addPhotoButton.titleLabel?.font =  UIFont(name: "Futura-bold", size: 14)
+        addPhotoButton.addTarget(self, action: #selector(presentImagePickerController), for: .touchUpInside)
+        addPhotoButton.setTitleColor(.systemPurple, for: .normal)
+        addPhotoButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(addPhotoButton)
         
         commentTxt.placeholder = "Start a new review"
         commentTxt.font = futuraFont.withSize(15)
@@ -214,6 +217,9 @@ class DetailViewController: UIViewController {
             likeButton.setImage(UIImage(systemName: makeLikeImageName()), for: .normal)
         }
         
+        // configure image picker
+        imagePickerController.allowsEditing = true
+        imagePickerController.delegate = self
     }
     
     func setupConstraints() {
@@ -272,7 +278,7 @@ class DetailViewController: UIViewController {
             make.top.equalTo(userComment.snp.bottom).offset(12)
         }
         
-        addPhoto.snp.makeConstraints { make in
+        addPhotoButton.snp.makeConstraints { make in
             make.centerY.equalTo(commentBlock)
             make.leading.equalTo(commentBlock.snp.trailing).offset(20)
         }
@@ -312,14 +318,20 @@ class DetailViewController: UIViewController {
         }
     }
     
+    let imagePickerController = UIImagePickerController()
+    @objc func presentImagePickerController() {
+        present(imagePickerController, animated: true)
+    }
+    
     @objc func submitComment() {
-        print("submit")
         
         if let unwrapcomment = commentTxt.text {
-            NetworkManager.addComment(park_id: park.id, comment: unwrapcomment) { comment in
+            NetworkManager.addComment(park_id: park.id, comment: unwrapcomment, image_data: imageStringData) { comment in
                 self.parkComment = [comment] + self.parkComment
                 self.collectionView.reloadData()
                 self.collectionView?.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .left, animated: true)
+                self.commentTxt.text = nil
+                self.imageStringData = nil
             }
         }
     }
@@ -436,6 +448,20 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 350, height: 133)
     }
+}
+
+extension DetailViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.editedImage] as? UIImage else { return }
+        
+        guard let imgData = image.jpegData(compressionQuality: 0.02) else { return }
+        let base64String = imgData.base64EncodedString()
+        imageStringData = "data:image/png;base64,\(base64String)"
+        
+        dismiss(animated: true)
+
+    }
+    
 }
 
 protocol LikeDelegate: UITableViewCell {

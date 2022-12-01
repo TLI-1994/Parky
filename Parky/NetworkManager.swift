@@ -31,12 +31,12 @@ class NetworkManager {
     }
     
     
-    static func addComment(park_id: Int, netid: String = "aa1" ,comment: String, img_data: String = "noFig", completion: @escaping (Comment) -> Void) {
+    static func addComment(park_id: Int, netid: String = "aa1" ,comment: String, image_data: String?, completion: @escaping (Comment) -> Void) {
         let endpoint = "\(host)/parks/\(park_id)/comment/"
         let params:Parameters = [
             "netid": netid,
             "comment": comment,
-            "img_data": img_data,
+            "image_data": image_data as Any,
             
         ]
         AF.request(endpoint,method: .post, parameters: params, encoding: JSONEncoding.default).validate().responseData { response in
