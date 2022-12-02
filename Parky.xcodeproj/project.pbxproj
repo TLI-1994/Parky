@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3EF23802C16A30003013B2A0 /* Pods_Parky.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A0384BAACC1EF327424CB4E /* Pods_Parky.framework */; };
-		9B6D3CE7292C3AA200C7A9B4 /* Capital.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D3CE6292C3AA200C7A9B4 /* Capital.swift */; };
 		9B6D3CE9292C550E00C7A9B4 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D3CE8292C550E00C7A9B4 /* MapViewController.swift */; };
 		9B6D3CEB292D7BF600C7A9B4 /* ParkingLot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D3CEA292D7BF600C7A9B4 /* ParkingLot.swift */; };
 		9B6D3CED292DB23500C7A9B4 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D3CEC292DB23500C7A9B4 /* NetworkManager.swift */; };
@@ -22,7 +21,6 @@
 /* Begin PBXFileReference section */
 		6175936FAA0966B5118FEA12 /* Pods-Parky.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Parky.debug.xcconfig"; path = "Target Support Files/Pods-Parky/Pods-Parky.debug.xcconfig"; sourceTree = "<group>"; };
 		7A0384BAACC1EF327424CB4E /* Pods_Parky.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Parky.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9B6D3CE6292C3AA200C7A9B4 /* Capital.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capital.swift; sourceTree = "<group>"; };
 		9B6D3CE8292C550E00C7A9B4 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		9B6D3CEA292D7BF600C7A9B4 /* ParkingLot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingLot.swift; sourceTree = "<group>"; };
 		9B6D3CEC292DB23500C7A9B4 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -82,7 +80,6 @@
 				9BAF04712926E92000069823 /* ViewController.swift */,
 				9B6D3CEC292DB23500C7A9B4 /* NetworkManager.swift */,
 				9B6D3CE8292C550E00C7A9B4 /* MapViewController.swift */,
-				9B6D3CE6292C3AA200C7A9B4 /* Capital.swift */,
 				9BAF04762926E92300069823 /* Assets.xcassets */,
 				9BAF04782926E92300069823 /* LaunchScreen.storyboard */,
 				9BAF047B2926E92300069823 /* Info.plist */,
@@ -218,7 +215,6 @@
 				9BAF04722926E92000069823 /* ViewController.swift in Sources */,
 				9BAF046E2926E92000069823 /* AppDelegate.swift in Sources */,
 				9B6D3CED292DB23500C7A9B4 /* NetworkManager.swift in Sources */,
-				9B6D3CE7292C3AA200C7A9B4 /* Capital.swift in Sources */,
 				9B6D3CE9292C550E00C7A9B4 /* MapViewController.swift in Sources */,
 				9BAF04702926E92000069823 /* SceneDelegate.swift in Sources */,
 			);
