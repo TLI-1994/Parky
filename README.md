@@ -3,6 +3,7 @@
 # Readme under preparation. Will be ppdated before Dec 3 at 12pm...
 
 
+## Description
 
 Parky shows the current parking situation near Cornell University. Depending on the available data, the main view shows the table view of all parking lots, including pictures, names, locations, fees, and open status. Besides, we can switch to a map view showing our locations with the authority as well as all parking lot locations on the map. Furthermore, each cell in the main view can be presented in a detailed view controller, which not only shows all information in the table but with the comment and location for a selected parking lot.
 
