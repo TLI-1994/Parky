@@ -5,9 +5,9 @@
 Parky tells the current parking lot availability near Cornell University. The main view shows a table of the information of all parking lots, including photos, names, locations, fees, and open status. Besides, Parky presents a detailed view when a table cell is selected. The detail view shows all information in the table as well as user comments and the location of the parking lot. Furthermore, a map view shows the user's location as well as all parking lot locations on the map.
 
 <p align="center">
-  <img src="screenShots/tableView.png" alt="drawing" width="25%" hspace="20"/>
-  <img src="screenShots/detailView.png" alt="drawing" width="25%" hspace="20"/>
-  <img src="screenShots/mapView.png" alt="drawing" width="25%" hspace="20"/>
+  <img src="screenShots/tableView.png" alt="drawing" width="25%" hspace="2%"/>
+  <img src="screenShots/detailView.png" alt="drawing" width="25%" hspace="2%"/>
+  <img src="screenShots/mapView.png" alt="drawing" width="25%" hspace="2%"/>
 </p>
 
 ## Features
