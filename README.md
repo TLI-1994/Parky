@@ -10,7 +10,7 @@ Parky tells the current parking lot availability near Cornell University. The ma
   <img src="screenShots/mapView.png" alt="drawing" width="25%" hspace="20"/>
 </p>
 
-## Features of the app
+## Features
 
 - Users can "like" a parking lot by either tapping the “heart” in the table cell or the "heart" in the detailed view.
 - Centering on user's location and zooming are available in the map view.
@@ -19,17 +19,18 @@ Parky tells the current parking lot availability near Cornell University. The ma
 
 The backend code and API specs can be found [here](https://github.com/vcccaat/Cornell-Parking).
 
-## iOS Requirements Met
+## Swift Technical Highlights
 
-- SnapKit is used to lay out all elements on all pages.
-- UITableView is used for all parking lots with information in the main page. 
+- `SnapKit` is used for layouts on all pages.
+- `UITableView` is used to list all parking lot information in the main view.
 - The "like" status is synced between the table cell and the detailed view by delegation.
-- Map view is pushed.
+- The map view consisting of an `MKMapView` is pushed.
 - The detailed view is presented.
-- The comments are implemented using a UICollectionView.
-- Integration with API:
-  * All the information is pulled from the backend database by `GET`.
-  * Submitted comments and photos are written to the database by `POST`.
+- The comments are implemented using a `UICollectionView`.
+
+## Networking and Integration with API
+- All the information is retrieved from the backend database by `GET`.
+- Submitted comments and photos are created in the database by `POST`.
 
 Pull requests and issue reports are welcome!
 
