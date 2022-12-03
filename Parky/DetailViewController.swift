@@ -7,6 +7,7 @@
 
 import UIKit
 import SnappingLayout
+import MapKit
 
 class DetailViewController: UIViewController {
     let snappingLayout = SnappingLayout()
@@ -45,6 +46,8 @@ class DetailViewController: UIViewController {
     
     let park: Park
     weak var delegate: LikeDelegate?
+    
+    let mapSnapShot = MKMapView()
     
     init(park: Park, delegate: LikeDelegate, isLiked: Bool) {
         self.park = park
@@ -181,10 +184,28 @@ class DetailViewController: UIViewController {
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(likeButton)
         
+        
+        mapSnapShot.translatesAutoresizingMaskIntoConstraints = false
+        mapSnapShot.isUserInteractionEnabled = false
+        mapSnapShot.layer.cornerRadius = 20
+        configMapSnapShot()
+        view.addSubview(mapSnapShot)
+        
+        
         configure(parkObject: park)
         setupConstraints()
         startTimer()
         
+    }
+    
+    func configMapSnapShot() {
+        let annotation = ParkingLotAnnotation(parkingLot: park)
+        mapSnapShot.addAnnotation(annotation)
+        let parkCoordinate = CLLocationCoordinate2D(latitude: Double(park.latitude)!, longitude: Double(park.longitude)!)
+        let span: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        let region: MKCoordinateRegion = MKCoordinateRegion(center: parkCoordinate, span: span)
+        mapSnapShot.setCenter(parkCoordinate, animated: true)
+        mapSnapShot.setRegion(region, animated: false)
     }
     
     func configure(parkObject: Park) {
@@ -315,6 +336,13 @@ class DetailViewController: UIViewController {
         likeButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.trailing.equalTo(view).offset(-20)
+        }
+        
+        mapSnapShot.snp.makeConstraints { make in
+            make.top.equalTo(locationLabel.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
