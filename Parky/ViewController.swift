@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     let refreshControl = UIRefreshControl()
     
     let openMapButtonItem = UIBarButtonItem()
+    var isLikedArr = [Bool](repeating: false, count: 21)
 
     override func viewDidLoad() {
         title = "Parky"
@@ -97,8 +98,10 @@ extension ViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: parkReuseIdentifier, for: indexPath) as! ParkTableViewCell
+        cell.delegate = self
         let parkObject = shownParkData[indexPath.row]
-        cell.configure(parkObject: parkObject)
+        let isLiked = isLikedArr[indexPath.row]
+        cell.configure(parkObject: parkObject, isLiked: isLiked)
         return cell
     }
 
@@ -110,7 +113,7 @@ extension ViewController: UITableViewDataSource {
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = parkTableView.cellForRow(at: indexPath) as! ParkTableViewCell
-        present(DetailViewController(park: shownParkData[indexPath.row], delegate: cell, isLiked: cell.isLiked), animated: true, completion: nil)
+        present(DetailViewController(park: shownParkData[indexPath.row], delegate: cell, isLiked: isLikedArr[indexPath.row]), animated: true, completion: nil)
         
     }
     
@@ -120,7 +123,12 @@ extension ViewController: UITableViewDelegate {
         let radius = cell.contentView.layer.cornerRadius
         cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: radius).cgPath
     }
-    
-    
-    
 }
+
+extension ViewController: ChangeIsLikeDelegate {
+    func ChangeIsLike(row: Int) {
+        isLikedArr[row].toggle()
+        refreshData()
+    }
+}
+

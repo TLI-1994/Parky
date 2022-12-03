@@ -63,6 +63,11 @@ class DetailViewController: UIViewController {
         // latest comment
         parkComment = park.comments.reversed()
         
+        let firstComment = Comment(id: 99999, netid: "hs959", comment: "To be the first person to comment", img: "First")
+        if parkComment.count == 0 {
+            parkComment = [firstComment]
+        }
+        
         picImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(picImageView)
         
@@ -355,7 +360,11 @@ class DetailViewController: UIViewController {
         
         if let unwrapcomment = commentTxt.text {
             NetworkManager.addComment(park_id: park.id, comment: unwrapcomment, image_data: imageStringData) { comment in
-                self.parkComment = [comment] + self.parkComment
+                if self.parkComment[0].img == "First" {
+                    self.parkComment = [comment]
+                } else {
+                    self.parkComment = [comment] + self.parkComment
+                }
                 self.collectionView.reloadData()
                 self.collectionView?.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .left, animated: true)
                 self.commentTxt.text = nil

@@ -58,6 +58,8 @@ class CommentsCollectionViewCell: UICollectionViewCell {
         commentTxt.text = comment.comment
         if (comment.img == "") {
             commentFig.image = UIImage(systemName: "car.fill")
+        } else if (comment.img == "First") {
+            commentFig.image = UIImage(systemName: "message.circle.fill")
         } else {
             commentFig.imageURL = comment.img
         }

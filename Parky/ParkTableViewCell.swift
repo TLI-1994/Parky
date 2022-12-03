@@ -25,6 +25,14 @@ class ParkTableViewCell: UITableViewCell {
     let parkLike = UIButton()
     var isLiked:Bool = false
     var likeDic:[Bool:String] = [:]
+    var parkID:Int?
+    
+    weak var delegate: ChangeIsLikeDelegate?
+    
+    init(delegate: ChangeIsLikeDelegate) {
+        self.delegate = delegate
+        super.init(style: UITableViewCell.CellStyle.default, reuseIdentifier: nil)
+    }
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -136,11 +144,13 @@ class ParkTableViewCell: UITableViewCell {
         
     }
     
-    func configure(parkObject: Park) {
+    func configure(parkObject: Park, isLiked: Bool) {
+        parkID = parkObject.id
         parkImageView.image = UIImage(named: String(parkImageDic[parkObject.id]!))
         parkLabel.text = parkObject.name
         parkAddress.text = parkObject.address
         parkFee.text = "\(parkObject.hourlyRate) \(parkObject.dailyRate)"
+        parkLike.setImage(UIImage(systemName: likeDic[isLiked]!), for: .normal)
         
         let tpr = OpenHourProcessor(openTime: parkObject.openHours).process()
         
@@ -171,7 +181,12 @@ extension ParkTableViewCell: LikeDelegate {
     @objc func toggleLikeButton() {
         isLiked.toggle()
         parkLike.setImage(UIImage(systemName: likeDic[isLiked]!), for: .normal)
+        if let unwrapParkID = parkID {
+            delegate?.ChangeIsLike(row: unwrapParkID - 1)
+        }
     }
-    
-    
+}
+
+protocol ChangeIsLikeDelegate: UIViewController {
+    func ChangeIsLike(row: Int)
 }
