@@ -8,7 +8,7 @@ Parky shows the current parking situation near Cornell University. Depending on 
 
 ## Features of the app:
 
-- See parking lots in a table view and can add like by clicking the “heat” in both cells and the corresponding detailed view controller
+- See parking lots in a table view and can add like by clicking the “heart” in both cells and the corresponding detailed view controller
 
 - Locate and Zoom-in and out are available in the map view.
 
