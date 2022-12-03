@@ -1,6 +1,6 @@
 # Parky
 
-## Readme under preparation. Will be ppdated before Dec 3 12pm...
+## Readme under preparation. Will be ppdated before Dec 3 at 12pm...
 
 
 
