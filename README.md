@@ -14,7 +14,7 @@ Parky shows the current parking situation near Cornell University. Depending on 
 
 •	The comments in a detailed view controller can automatically move one by one and can scroll manually. One can write a comment and add a photo (optional) and then submit it; the comment will jump into view and appear at the top.
 
-The backend is also available at https://github.com/vcccaat/Cornell-Parking with API specs https://github.com/vcccaat/Cornell-Parking/blob/master/API-specs.txt 
+The backend is also available at [backend](https://github.com/vcccaat/Cornell-Parking) with API specs [API](https://github.com/vcccaat/Cornell-Parking/blob/master/API-specs.txt) 
 
 ### iOS Requirements Met
 
