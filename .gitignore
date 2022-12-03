@@ -94,3 +94,6 @@ iOSInjectionProject/
 
 # user data
 */xcuserdata/
+
+# shared data
+*/xcshareddata/

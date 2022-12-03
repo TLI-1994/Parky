@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SnapKit
+import MapKit
 
 class ViewController: UIViewController {
     
@@ -19,9 +21,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
-        //title = "Parky"
         view.backgroundColor = .white
         
         parkTableView.translatesAutoresizingMaskIntoConstraints = false
