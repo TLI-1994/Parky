@@ -18,11 +18,19 @@ class ViewController: UIViewController {
     
     let parkReuseIdentifier = "parkReuseIdentifier"
     let refreshControl = UIRefreshControl()
+    
+    let openMapButtonItem = UIBarButtonItem()
 
     override func viewDidLoad() {
+        title = "Parky"
         super.viewDidLoad()
         
         view.backgroundColor = .white
+        openMapButtonItem.image = UIImage(systemName: "mappin.and.ellipse")
+        openMapButtonItem.target = self
+        openMapButtonItem.action = #selector(pushMap)
+        
+        navigationItem.rightBarButtonItem = openMapButtonItem
         
         parkTableView.translatesAutoresizingMaskIntoConstraints = false
         parkTableView.delegate = self
@@ -44,21 +52,31 @@ class ViewController: UIViewController {
         
     }
     
-    func createDummyData() {
-        NetworkManager.getAllParks { parks in
-            self.parkData = parks
-            self.shownParkData = self.parkData
-            self.parkTableView.reloadData()
+    var mapView: MapViewController?
+    @objc func pushMap() {
+        if let mapView {
+            navigationController?.pushViewController(mapView, animated: true)
+        } else {
+            mapView = MapViewController(parkingLots: self.shownParkData)
+            pushMap()
         }
     }
     
+    func createDummyData() {
+        fetchParkingLots()
+        self.parkTableView.reloadData()
+    }
+    
     @objc func refreshData() {
-
+        fetchParkingLots()
+        self.parkTableView.reloadData()
+        self.refreshControl.endRefreshing()
+    }
+    
+    func fetchParkingLots() {
         NetworkManager.getAllParks { parks in
             self.parkData = parks
             self.shownParkData = self.parkData
-            self.parkTableView.reloadData()
-            self.refreshControl.endRefreshing()
         }
     }
     

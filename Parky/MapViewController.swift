@@ -26,12 +26,12 @@ class MapViewController: UIViewController {
     let mapView = MKMapView()
     let manager: CLLocationManager = CLLocationManager()
     let centerButton = MapButton(systemName: "location.fill")
-    var parkingLots: [ParkingLot] = []
+    var parkingLots: [Park] = []
     var parkingLotAnnotations: [ParkingLotAnnotation] = []
     
     var regionHasBeenCentered = false
     
-    init(parkingLots: [ParkingLot]) {
+    init(parkingLots: [Park]) {
         self.parkingLots = parkingLots
         super.init(nibName: nil, bundle: nil)
     }
@@ -67,7 +67,7 @@ class MapViewController: UIViewController {
         }
     }
     
-    func createAnnotations(parkingLots: [ParkingLot]) -> [ParkingLotAnnotation] {
+    func createAnnotations(parkingLots: [Park]) -> [ParkingLotAnnotation] {
         return parkingLots.map { parkingLot in
             ParkingLotAnnotation(parkingLot: parkingLot)
         }
@@ -127,7 +127,7 @@ class ParkingLotAnnotation: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
     var info: String
 
-    init(parkingLot: ParkingLot) {
+    init(parkingLot: Park) {
         self.title = parkingLot.name
         self.coordinate = CLLocationCoordinate2D(latitude: Double(parkingLot.latitude)!, longitude: Double(parkingLot.longitude)!)
         self.info = parkingLot.note
