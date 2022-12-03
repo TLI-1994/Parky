@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct Comment: Codable {
-    var id: Int
-    var netid: String
-    var comment: String
-    var img: String
-}
+//struct Comment: Codable {
+//    var id: Int
+//    var netid: String
+//    var comment: String
+//    var img: String
+//}
 
 struct ParkingLot: Codable {
     var id: Int
