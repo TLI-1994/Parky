@@ -63,20 +63,19 @@ class ViewController: UIViewController {
     }
     
     func createDummyData() {
-        fetchParkingLots()
-        self.parkTableView.reloadData()
-    }
-    
-    @objc func refreshData() {
-        fetchParkingLots()
-        self.parkTableView.reloadData()
-        self.refreshControl.endRefreshing()
-    }
-    
-    func fetchParkingLots() {
         NetworkManager.getAllParks { parks in
             self.parkData = parks
             self.shownParkData = self.parkData
+            self.parkTableView.reloadData()
+        }
+    }
+    
+    @objc func refreshData() {
+        NetworkManager.getAllParks { parks in
+            self.parkData = parks
+            self.shownParkData = self.parkData
+            self.parkTableView.reloadData()
+            self.refreshControl.endRefreshing()
         }
     }
     
