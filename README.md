@@ -6,7 +6,7 @@
 
 Parky shows the current parking situation near Cornell University. Depending on the available data, the main view shows the table view of all parking lots, including pictures, names, locations, fees, and open status. Besides, we can switch to a map view showing our locations with the authority as well as all parking lot locations on the map. Furthermore, each cell in the main view can be presented in a detailed view controller, which not only shows all information in the table but with the comment and location for a selected parking lot.
 
-###Features of the app:
+### Features of the app:
 
 •	See parking lots in a table view and can add like by clicking the “heat” in both cells and the corresponding detailed view controller
 
@@ -16,7 +16,7 @@ Parky shows the current parking situation near Cornell University. Depending on 
 
 The backend is also available at https://github.com/vcccaat/Cornell-Parking with API specs https://github.com/vcccaat/Cornell-Parking/blob/master/API-specs.txt 
 
-###iOS Requirements Met
+### iOS Requirements Met
 
 •	SnapKit is used to lay out all elements on all pages.
 
