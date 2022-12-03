@@ -60,6 +60,9 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        
         // latest comment
         parkComment = park.comments.reversed()
         
@@ -436,7 +439,7 @@ class DetailViewController: UIViewController {
     
     @objc func imageTapped(sender: UITapGestureRecognizer) {
         let imageView = sender.view as! UIImageView
-        if imageView.image != UIImage(systemName: "car.fill") {
+        if imageView.image != UIImage(systemName: "car.fill") && imageView.image != UIImage(systemName: "message.circle.fill"){
             let newImageView = UIImageView(image: imageView.image)
             newImageView.frame = UIScreen.main.bounds
             //newImageView.backgroundColor = .white
@@ -454,6 +457,10 @@ class DetailViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = false
         self.tabBarController?.tabBar.isHidden = false
         sender.view?.removeFromSuperview()
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     required init?(coder: NSCoder) {
@@ -504,4 +511,3 @@ extension DetailViewController: UIImagePickerControllerDelegate & UINavigationCo
 protocol LikeDelegate: UITableViewCell {
     func toggleLikeButton()
 }
-
