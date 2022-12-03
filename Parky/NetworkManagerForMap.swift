@@ -8,7 +8,7 @@
 import Alamofire
 import Foundation
 
-class NetworkManager {
+class NetworkManagerForMap {
     
     static let host = "http://34.150.235.148"
     
