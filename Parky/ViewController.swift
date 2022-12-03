@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     }
     
     func fetchParkingLots() {
-        NetworkManager.getAllParkingLots { parkingLots in
+        NetworkManagerForMap.getAllParkingLots { parkingLots in
             print("received \(parkingLots.count) parks")
             self.parkingLots = parkingLots
         }
